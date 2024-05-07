@@ -21,7 +21,7 @@ class App extends React.Component {
     };
   }
 
-  callApi = (requestParams) => {
+  callApi = (requestParams) => { 
     // mock output
     const data = {
       count: 2,
