@@ -17,10 +17,18 @@ form {
         padding: .25rem .5rem;
         background: #ccc;
 
-        &:hover, &.active {
+        &:hover {
           background: #fff;
+        }
+
+        &:active {
+          background: #fff;
+          border-radius: 5px;
+          box-shadow: 0 0 5px rgba(0, 0, 0, .5);
         }
       }
     }
   }
 }
+
+

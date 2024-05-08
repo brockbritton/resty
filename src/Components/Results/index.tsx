@@ -1,4 +1,6 @@
 import React from 'react';
+import { prettyPrintJson } from 'pretty-print-json'
+import './Results.scss';
 
 export type Result = {
   name: string;
@@ -15,9 +17,10 @@ interface ResultsProps {
 }
 
 function Results(props: ResultsProps): React.ReactElement {
+  const html = prettyPrintJson.toHtml(props.data);
   return (
     <section>
-      <pre>{props.data ? JSON.stringify(props.data, undefined, 2) : null}</pre>
+      <pre dangerouslySetInnerHTML={{ __html: html }}/>
     </section>
   );
 }
