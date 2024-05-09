@@ -1,11 +1,7 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import axios, { AxiosResponse } from 'axios';
 
 import './App.scss';
-
-// Let's talk about using index.js and some other name in the component folder.
-// There's pros and cons for each way of doing this...
-// OFFICIALLY, we have chosen to use the Airbnb style guide naming convention. 
-// Why is this source of truth beneficial when spread across a global organization?
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 import Form from './Components/Form';
@@ -22,28 +18,46 @@ export type Result = {
 };
 
 export type DataType = {
-  count: number;
-  results: Result[];
-} | null;
+  headers: object;
+  results: Array<Result>;
+} ;
 
 function App(): React.ReactElement {
 
-  const [data, setData] = useState<DataType>(null);
+  const [data, setData] = useState<DataType>();
   const [requestParams, setRequestParams] = useState<RequestParams>({
     method: '',
     url: '',
   });
 
-  const callApi = (requestParams: RequestParams ) => { 
-    setData({
-      count: 2,
-      results: [
-        {name: 'fake thing 1', url: 'http://fakethings.com/1'},
-        {name: 'fake thing 2', url: 'http://fakethings.com/2'},
-      ],
-    });
-    setRequestParams(requestParams);
+  useEffect(() => {
+    if (!(requestParams.url === '')) {
+      console.log('I AM THE PARAMS', requestParams)
+      callAxios(requestParams);
+    }
+  }, [requestParams]);
+
+  const callApi = (newRequestParams: RequestParams ) => { 
+    //calls the axios function using useEffect
+    if (newRequestParams.url.length === 0) {
+      alert('Please enter a URL');
+    } else {
+      setRequestParams(newRequestParams);
+    }
   }
+
+  const callAxios = async (requestParams: RequestParams) => {
+    const response = await axios({
+      method: requestParams.method,
+      url: requestParams.url,
+    });
+    console.log('I AM THE RESPONSE', response.data)
+    //response.headers
+    setData({
+      headers: response.headers,
+      results: response.data.results,
+    });
+  };
 
   return (
     <React.Fragment>
@@ -51,7 +65,7 @@ function App(): React.ReactElement {
       <div>Request Method: {requestParams.method}</div>
       <div>URL: {requestParams.url}</div>
       <Form handleApiCall={callApi} />
-      <Results data={data} />
+      {data ? <Results data={data} /> : null}
       <Footer />
     </React.Fragment>
   );

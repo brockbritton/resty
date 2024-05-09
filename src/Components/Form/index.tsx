@@ -12,7 +12,7 @@ export interface FormProps {
 
 function Form(props: FormProps): React.ReactElement {
   
-  const [method, setMethod] = useState<string>('');
+  const [method, setMethod] = useState<string>('GET');
   const [url, setUrl] = useState<string>('');
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
@@ -28,14 +28,14 @@ function Form(props: FormProps): React.ReactElement {
     <form onSubmit={handleSubmit}>
       <label >
         <span>URL: </span>
-        <input name='url' type='text' onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUrl(e.target.value)} />
+        <input data-testid='url-input' name='url' type='text' onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUrl(e.target.value)} />
         <button type="submit">GO!</button>
       </label>
       <label className="methods">
-        <span id="get" onClick={() => setMethod('GET')}>GET</span>
-        <span id="post" onClick={() => setMethod('POST')}>POST</span>
-        <span id="put" onClick={() => setMethod('PUT')}>PUT</span>
-        <span id="delete" onClick={() => setMethod('DELETE')}>DELETE</span>
+        <button id="get" onClick={() => setMethod('GET')}>GET</button>
+        <button id="post" onClick={() => setMethod('POST')}>POST</button>
+        <button id="put" onClick={() => setMethod('PUT')}>PUT</button>
+        <button id="delete" onClick={() => setMethod('DELETE')}>DELETE</button>
       </label>
     </form>
   );
